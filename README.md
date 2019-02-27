@@ -32,7 +32,7 @@ The database contains Spiral objects with the following structure:
 |---|---|---|---|---|---
 | id of the spiral | comma delimited list of nodal coordinates | csv file of frequency results stored as a string (handled during object creation) | csv file of frequency results stored as a string (handled during object creation) | a dictionary of rf related data stored as a JSON string | a dictionary of computer vision related data stored as a JSON string |
 
-RF Data and Vision Data were made to be dictionarys so as to allow arbitrary fields to be added to the object withouth having to manipulate the structure of the database
+RF Data and Vision Data were made to be dictionaries so as to allow arbitrary fields to be added to the object withouth having to manipulate the structure of the database
 
 ### Creating spiral objets
 Here is an example of creating a Spiral object
