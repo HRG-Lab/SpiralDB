@@ -27,6 +27,7 @@ session = sprialdb.connect(db)
 
 ### Spiral object
 The database contains Spiral objects with the following structure:
+
 | id | nodes | frequency_results | phase_results | rf_data | vision_data |
 |---|---|---|---|---|---
 | id of the spiral | comma delimited list of nodal coordinates | csv file of frequency results stored as a string (handled during object creation) | csv file of frequency results stored as a string (handled during object creation) | a dictionary of rf related data stored as a JSON string | a dictionary of computer vision related data stored as a JSON string |
