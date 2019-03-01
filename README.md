@@ -74,6 +74,9 @@ delete_spiral(session, id)
 # Gets a piece of data from the rf_data dictionary. `key` is a string 
 get_rf_data(session, id, key)
 
+# Deletes an item from the rf_data dictionary by key. 'key' is a string
+delete_rf_data_item(session, id, key)
+
 # Gets the whole rf_data dictionary
 get_rf_data_dict(session, id)
 
@@ -84,6 +87,7 @@ update_rf_data_dict(session, id, key, value)
 # The following three are counterparts of the rf_data functions
 get_vision_data(session, id, key)
 get_vision_data_dict(session, id, key)
+delete_vision_data_item(session, id, key)
 update_vision_data_dict(session, id, key, value)
 
 # Looks up the `column_name` column in the specified object and returns the data
