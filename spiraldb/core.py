@@ -87,6 +87,24 @@ def update_rf_data(session, id, key, value):
     spiral.rf_data = json.dumps(rf_data)
     session.commit()
 
+def delete_rf_data_item(session, id, key):
+    rf_data = get_rf_data_dict(session, id)
+    del rf_data[key]
+    _replace_rf_data_dict(session, id, rf_data)
+
+def _replace_rf_data_dict(session, id, rf_data):
+    if session is None:
+        raise ConnectionError("No connection to database")
+    # TODO is more error checking necessary?
+
+    spiral = session.query(Spiral).get(id)
+
+    if spiral is None:
+        raise LookupError("Spiral {:d} does not exist".format(id))
+
+    spiral.rf_data = json.dumps(rf_data)
+    session.commit()
+
 def get_vision_data(session, id, key):
     return get_vision_data_dict(session, id)[key]
 
@@ -114,6 +132,24 @@ def update_vision_data(session, id, key, value):
 
     vision_data = json.loads(spiral.vision_data)
     vision_data[key] = value
+
+    spiral.vision_data = json.dumps(vision_data)
+    session.commit()
+
+def delete_vision_data_item(session, id, key):
+    vision_data = get_vision_data_dict(session, id)
+    del vision_data[key]
+    _replace_vision_data_dict(session, id, vision_data)
+
+def _replace_vision_data_dict(session, id, vision_data):
+    if session is None:
+        raise ConnectionError("No connection to database")
+    # TODO is more error checking necessary?
+
+    spiral = session.query(Spiral).get(id)
+
+    if spiral is None:
+        raise LookupError("Spiral {:d} does not exist".format(id))
 
     spiral.vision_data = json.dumps(vision_data)
     session.commit()

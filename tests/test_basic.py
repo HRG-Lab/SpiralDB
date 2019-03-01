@@ -25,21 +25,41 @@ def test_insert():
 
 def test_update_rf_data():
     spiraldb.update_rf_data(session, 18, 'bandwidth', 5)
+    spiraldb.update_rf_data(session, 18, 'center', 2)
     rf_data = json.loads(session.query(spiraldb.Spiral).get(18).rf_data)
-    assert 'bandwidth' in rf_data
-    assert rf_data['bandwidth'] == 5
+    assert rf_data == {
+        'bandwidth': 5,
+        'center': 2
+    }
 
 def test_get_rf_data():
     assert spiraldb.get_rf_data(session, 18, 'bandwidth') == 5
+    
+def test_delete_rf_data_item():
+    spiraldb.delete_rf_data_item(session, 18, 'center')
+    rf_data = json.loads(session.query(spiraldb.Spiral).get(18).rf_data)
+    assert rf_data == {
+        'bandwidth': 5
+    }
 
 def test_update_vision_data():
     spiraldb.update_vision_data(session, 18, 'thing', 'is thing')
+    spiraldb.update_vision_data(session, 18, 'thing2', 'is 2 thing')
     vision_data = json.loads(session.query(spiraldb.Spiral).get(18).vision_data)
-    assert 'thing' in vision_data
-    assert vision_data['thing'] == 'is thing'
+    assert vision_data == {
+        'thing': 'is thing',
+        'thing2': 'is 2 thing'
+    }
 
 def test_get_vision_data():
     assert spiraldb.get_vision_data(session, 18, 'thing') == 'is thing'
+    
+def test_delete_vision_data_item():
+    spiraldb.delete_vision_data_item(session, 18, 'thing2')
+    vision_data = json.loads(session.query(spiraldb.Spiral).get(18).vision_data)
+    assert vision_data == {
+        'thing': 'is thing',
+    }
 
 def test_column_as_data_frame():
     df = spiraldb.column_as_data_frame(session, 18, 'nodes')
