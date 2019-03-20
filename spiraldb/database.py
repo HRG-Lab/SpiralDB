@@ -19,10 +19,12 @@ def _database_path(db):
 
 class Spiral(Base):
     __tablename__ = 'spiral'
+
     id = Column(Integer, primary_key=True)
     nodes = Column(Text, nullable=False)
     frequency_results = Column(Text, nullable=False)
     phase_results = Column(Text, nullable=False)
+    image_path = Column(Text, nullable=False)
     # These two columns are JSON objects, but sqlite has no JSON data type. 
     # As such, these must be stored as text, but all abstractions will immediately 
     # convert to JSON (or dict) before interacting with them

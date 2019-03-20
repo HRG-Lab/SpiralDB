@@ -28,9 +28,9 @@ session = sprialdb.connect(db)
 ### Spiral object
 The database contains Spiral objects with the following structure:
 
-| id | nodes | frequency_results | phase_results | rf_data | vision_data |
-|---|---|---|---|---|---
-| id of the spiral | comma delimited list of nodal coordinates | csv file of frequency results stored as a string (handled during object creation) | csv file of frequency results stored as a string (handled during object creation) | a dictionary of rf related data stored as a JSON string | a dictionary of computer vision related data stored as a JSON string |
+| id | nodes | frequency_results | phase_results | image_path | rf_data | vision_data |
+|---|---|---|---|---|---|---
+| id of the spiral | comma delimited list of nodal coordinates | csv file of frequency results stored as a string (handled during object creation) | csv file of frequency results stored as a string (handled during object creation) | relative path to image of spiral | a dictionary of rf related data stored as a JSON string | a dictionary of computer vision related data stored as a JSON string |
 
 RF Data and Vision Data were made to be dictionaries so as to allow arbitrary fields to be added to the object withouth having to manipulate the structure of the database
 
@@ -48,6 +48,7 @@ spiraldb.create_spiral(
     nodes=nodal_data_path,
     frequency_results=frequency_results,
     phase_results=phase_results
+    image_path="2_X_13660_Y_5000.jpg"
 )
 ```
 
@@ -57,6 +58,36 @@ All functions for interacting with data have the same two first arguments: the s
 ...
 get_rf_data(session, 1, 'bandwidth')
 ...
+```
+
+### Note about images
+
+The image path is simply the name of the image file related to the spiral. To use it, you must construct the path yourself. The API makes no assumptions about the location of the folder containing all the image. As an example, consider the case where the image directory is relative to the path of your script:
+
+```bash
+.
+├── mess_with_image.py
+├──  tests/
+|    └──test.db
+├──  spiral_images/
+|    ├── ...
+|    ├── 2_X_13660_Y_5000.jpg
+|    └── ...
+```
+
+You could create the whole path to the image like so
+
+```python
+# mess_with_image.py
+import os
+import spiraldb
+
+IMAGE_PATH_PREFIX = os.path.join(os.getcwd(), 'spiral_images')
+db = "tests/test.db"
+session = spiraldb.connect(db)
+
+# Generates full path to image for the spiral with id = 1
+spiral_image_path = os.path.join(IMAGE_PATH_PREFIX, spiraldb.image_path(session, 1))
 ```
 
 ### All available functions
@@ -94,4 +125,10 @@ update_vision_data_dict(session, id, key, value)
 # as a pandas dataframe. 
 # `column_name` is a string in ['nodes', 'frequency_results', 'phase_results']
 column_as_data_frame(session, id, column_name)
+
+# Sets the image path of Spiral(id) to 'image_path'
+update_image_path(session, id, image_path)
+
+# Returns the image path of Sprial(id)
+image_path(session, id)
 ```

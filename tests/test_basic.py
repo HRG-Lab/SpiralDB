@@ -17,11 +17,20 @@ def test_insert():
         session,
         id=18,
         nodes=nodal_data_path,
+        image_path="2_X_13660_Y_5000.jpg",
         frequency_results=frequency_results,
         phase_results=phase_results
     )
 
     assert session.query(spiraldb.Spiral).get(18) is not None
+
+def test_update_image_path():
+    spiraldb.update_image_path(session, 18, '2_X_13660_Y_5001.jpg')
+    assert session.query(spiraldb.Spiral).get(18).image_path == '2_X_13660_Y_5001.jpg'
+
+def test_image_path():
+    image_path = spiraldb.image_path(session, 18)
+    assert image_path == '2_X_13660_Y_5001.jpg'
 
 def test_update_rf_data():
     spiraldb.update_rf_data(session, 18, 'bandwidth', 5)

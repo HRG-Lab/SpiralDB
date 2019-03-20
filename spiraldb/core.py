@@ -5,7 +5,9 @@ from io import StringIO
 
 from .database import Spiral
 
-def create_spiral(session, *, id, nodes, frequency_results, phase_results):
+
+
+def create_spiral(session, *, id, nodes, frequency_results, phase_results, image_path):
     ''' Creates a spiral with nodes, frequency, and phase data
     Has empty rf and vision json objects
     '''
@@ -28,9 +30,10 @@ def create_spiral(session, *, id, nodes, frequency_results, phase_results):
             nodes=nodes,
             frequency_results=frequency_results,
             phase_results=phase_results,
+            image_path=image_path,
             # These fields cannot be null, so populate with empty JSON object
-            rf_data = json.dumps({}), 
-            vision_data = json.dumps({}),
+            rf_data=json.dumps({}), 
+            vision_data=json.dumps({}),
         )
 
         session.add(new_spiral)
@@ -167,3 +170,11 @@ def column_as_data_frame(session, id, column_name):
         df = pandas.read_csv(StringIO(query.phase_results), sep=',', header=0)
 
     return df
+
+def update_image_path(session, id, image_path):
+    spiral = session.query(Spiral).get(id)
+    spiral.image_path = image_path
+    session.commit()
+
+def image_path(session, id):
+    return session.query(Spiral).get(id).image_path
